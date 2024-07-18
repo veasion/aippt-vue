@@ -1,7 +1,6 @@
 {
   "name": "aippt-vue",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,6 +10,10 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@types/pako": "^2.0.3",
+    "base64-js": "^1.5.1",
+    "marked": "^13.0.2",
+    "pako": "^2.1.0",
     "vue": "^3.4.29"
   },
   "devDependencies": {
