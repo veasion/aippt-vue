@@ -131,7 +131,7 @@ loadTemplates()
   
 <style scoped>
 .content {
-  margin-top: 4em;
+  padding-top: 4em;
   text-align: center;
 }
 .but_div {

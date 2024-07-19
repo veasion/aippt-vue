@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-self-assign */
 import { geometryPaths } from './geometry.js'
 import { drawChart } from './chart.js'
 function Ppt2Canvas(_canvas, imageCrossOrigin) {
@@ -1066,7 +1068,7 @@ function Ppt2Canvas(_canvas, imageCrossOrigin) {
 					data[i + 2] = gray * b + (1 - gray) * prst
 				}
 				patternCtx.putImageData(imageData, 0, 0)
-			} catch(e) {}
+			} catch(e) { /* empty */ }
 		}
 		return ctx.createPattern(patternCanvas, mode)
 	}

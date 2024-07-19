@@ -1,7 +1,7 @@
 <template>
   <div class="content">
       <h1>🤖 AI智能生成PPT演示文稿</h1>
-      <div class="desc">生成大纲 ---> 挑选模板 --> 实时生成PPT</div>
+      <div class="desc">生成大纲 ---&gt; 挑选模板 --&gt; 实时生成PPT</div>
       <div>
         <span>主题：</span>
         <input v-model="subject" placeholder="请输入PPT主题" />
@@ -89,7 +89,7 @@ function nextStep() {
 
 <style scoped>
 .content {
-  margin-top: 4em;
+  padding-top: 4em;
   text-align: center;
 }
 button {
