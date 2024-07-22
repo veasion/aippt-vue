@@ -64,7 +64,7 @@ function generateOutline() {
     window.scrollTo({ behavior: 'smooth', top: document.body.scrollHeight })
   }
   source.onend = function (data: any) {
-    if (data.data.startsWith('{') && data.data.endWith('}')) {
+    if (data.data.startsWith('{') && data.data.endsWith('}')) {
       let json = JSON.parse(data.data)
       if (json.code != 0) {
         alert('生成大纲异常：' + json.message)

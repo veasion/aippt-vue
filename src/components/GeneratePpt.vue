@@ -74,12 +74,23 @@ function generatePptx(outline: string, templateId: string) {
   })
   source.onmessage = function (data: any) {
       let json = JSON.parse(data.data)
+      if (json.status == -1) {
+        alert('生成PPT异常：' + json.error)
+        return
+      }
       if (json.pptId) {
         descMsg.value = `正在生成中，进度 ${json.current}/${json.total}，请稍后...`
         asyncGenPptxInfo(json.pptId)
       }
   }
   source.onend = function (data: any) {
+      if (data.data.startsWith('{') && data.data.endsWith('}')) {
+        let json = JSON.parse(data.data)
+        if (json.code != 0) {
+          alert('生成PPT异常：' + json.message)
+          return
+        }
+      }
       clearInterval(timer)
       gening.value = false
       descMsg.value = '正在生成中，请稍后...'
