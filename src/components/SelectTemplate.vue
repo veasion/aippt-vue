@@ -29,7 +29,7 @@ const $emit = defineEmits(['nextStep'])
 const background = document.body.style.background
 
 async function loadTemplates() {
-  const url = 'https://chatmee.cn/api/ppt/randomTemplates'
+  const url = 'https://docmee.cn/api/ppt/randomTemplates'
   const resp = await (await fetch(url, {
     method: 'POST',
     headers: {

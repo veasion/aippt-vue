@@ -32,7 +32,7 @@ async function createApiToken() {
     alert('请在代码中设置apiKey')
     return
   }
-  const url = 'https://chatmee.cn/api/user/createApiToken'
+  const url = 'https://docmee.cn/api/user/createApiToken'
   const resp = await (await fetch(url, {
     method: 'POST',
     headers: {

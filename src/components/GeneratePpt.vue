@@ -182,7 +182,7 @@ function drawPptx(idx: number) {
 }
 
 function downloadPptx() {
-  let url = 'https://chatmee.cn/api/ppt/downloadPptx'
+  let url = 'https://docmee.cn/api/ppt/downloadPptx'
   let xhr = new XMLHttpRequest()
   xhr.open('POST', url, true)
   xhr.setRequestHeader('token', props.token)
@@ -206,7 +206,7 @@ function downloadPptx() {
 function loadById(id: string) {
   gening.value = false
   pptxId.value = id
-  let url = 'https://chatmee.cn/api/ppt/loadPptx?id=' + id
+  let url = 'https://docmee.cn/api/ppt/loadPptx?id=' + id
   let xhr = new XMLHttpRequest()
   xhr.open('GET', url, true)
   xhr.setRequestHeader('token', props.token)
