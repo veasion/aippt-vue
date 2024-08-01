@@ -94,7 +94,9 @@ function generatePptx(outline: string, templateId: string) {
       clearInterval(timer)
       gening.value = false
       descMsg.value = '正在生成中，请稍后...'
-      drawPptxList()
+      setTimeout(() => {
+        drawPptxList(0, false)
+      }, 200)
   }
   source.onerror = function (err: any) {
       clearInterval(timer)
@@ -263,6 +265,14 @@ onMounted(() => {
 </script>
 
 <style scoped>
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: #fff;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+}
 body {
   overflow: hidden;
 }
