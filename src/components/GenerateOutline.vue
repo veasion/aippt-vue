@@ -8,12 +8,14 @@
         <button @click="generateOutline">生成大纲</button>
         <button v-if="genDone" @click="nextStep">下一步：选择模板</button>
       </div>
-      <div v-html="outlineHtml" class="outline"></div>
+      <OutlineEdit v-if="genDone" :outlineTree="outlineTree" @update="updateOutline" class="outline_edit"/>
+      <div v-else v-html="outlineHtml" class="outline"></div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue'
+import OutlineEdit from './OutlineEdit.vue'
 import { marked } from 'marked'
 import { SSE } from '../utils/sse.js'
 
@@ -23,6 +25,7 @@ const props = defineProps<{
 
 const subject = ref('')
 const outline = ref('')
+const outlineTree = ref()
 const outlineHtml = ref('')
 const genDone = ref(false)
 const $emit = defineEmits(['nextStep'])
@@ -59,9 +62,13 @@ function generateOutline() {
       alert('生成大纲异常：' + json.error)
       return
     }
-    outline.value += json.text
-    outlineHtml.value = marked.parse(outline.value.replace('```markdown', '').replace(/```/g, '')) as string
-    window.scrollTo({ behavior: 'smooth', top: document.body.scrollHeight })
+    if (json.status == 4 && json.result) {
+      outlineTree.value = json.result
+    } else {
+      outline.value += json.text
+      outlineHtml.value = marked.parse(outline.value.replace('```markdown', '').replace(/```/g, '')) as string
+      window.scrollTo({ behavior: 'smooth', top: document.body.scrollHeight })
+    }
   }
   source.onend = function (data: any) {
     if (data.data.startsWith('{') && data.data.endsWith('}')) {
@@ -79,6 +86,10 @@ function generateOutline() {
     alert('生成大纲异常')
   }
   source.stream()
+}
+
+function updateOutline(md: any) {
+  outline.value = md + ''
 }
 
 function nextStep() {
@@ -104,5 +115,9 @@ button {
 .outline {
   text-align: left;
   margin: 0 calc(20vw);
+}
+.outline_edit {
+  width: 40rem;
+  margin: 1rem auto;
 }
 </style>
