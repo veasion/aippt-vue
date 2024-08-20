@@ -23,7 +23,7 @@ const uid = 'test'
 
 const step = ref(1)
 const outline = ref('')
-const templateId = ref("")
+const templateId = ref('')
 const token = ref(localStorage.getItem('token') || '')
 
 // 这里只是demo演示，创建token请在服务端调用
