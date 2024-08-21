@@ -1,8 +1,11 @@
 <template>
   <div>
+    <!-- 生成大纲 -->
     <GenerateOutline v-if="step == 1" :token="token" @nextStep="handleOutline" />
+    <!-- 选择模板 -->
     <SelectTemplate v-if="step == 2" :token="token" @nextStep="selectTemplate" />
-    <GeneratePpt v-if="step == 3" :token="token" :params="{ templateId, outline }" />
+    <!-- 生成PPT -->
+    <GeneratePpt v-if="step == 3" :token="token" :templateId="templateId" :outline="outline" :dataUrl="dataUrl" />
   </div>
 </template>
 
@@ -23,6 +26,7 @@ const uid = 'test'
 
 const step = ref(1)
 const outline = ref('')
+const dataUrl = ref()
 const templateId = ref('')
 const token = ref(localStorage.getItem('token') || '')
 
@@ -54,9 +58,10 @@ async function createApiToken() {
   })
 }
 
-function handleOutline(_outline: string) {
+function handleOutline(params: any) {
   step.value++
-  outline.value = _outline
+  outline.value = params.outline
+  dataUrl.value = params.dataUrl
 }
 
 function selectTemplate(id: string) {

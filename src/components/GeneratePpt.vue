@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="right_div">
-        <a v-if="!gening && pptxId" class="download" @click="downloadPptx">下载</a>
+        <a v-if="!gening && pptId" class="download" @click="downloadPptx">下载</a>
         <div style="margin-left: 200px;">
           <svg ref="svg" class="right_canvas"></svg>
         </div>
@@ -39,22 +39,24 @@ import { Ppt2Canvas } from '../utils/ppt2canvas.js'
 
 const props = defineProps<{
   token: string,
-  params: any
+  templateId: string,
+  outline: string,
+  dataUrl: string
 }>()
 
 const gening = ref(false)
 const descTime = ref(0)
 const descMsg = ref('正在生成中，请稍后...')
 const svg = ref()
-const pptxId = ref('')
+const pptId = ref('')
 const pages = ref([])
 const canvasList = ref([] as any)
 const currentIdx = ref(0)
 
 var pptxObj = null as any
-var painter = null as Ppt2Svg
+var painter = null as any
 
-function generatePptx(outline: string, templateId: string) {
+function generatePptx(templateId: string, outline: string, dataUrl: string) {
   var count = 0
   var timer = setInterval(() => {
       count = count + 1
@@ -64,14 +66,13 @@ function generatePptx(outline: string, templateId: string) {
   const url = 'https://docmee.cn/api/ppt/generateContent'
   var source = new SSE(url, {
       method: 'POST',
-      // withCredentials: true,
       headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache',
-          'token': props.token
+        'token': props.token,
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'application/json',
       },
-      payload: JSON.stringify({ asyncGenPptx: true, outlineMarkdown: outline, templateId }),
-  })
+      payload: JSON.stringify({ asyncGenPptx: true, templateId, outlineMarkdown: outline, dataUrl }),
+  }) as any
   source.onmessage = function (data: any) {
       let json = JSON.parse(data.data)
       if (json.status == -1) {
@@ -107,7 +108,7 @@ function generatePptx(outline: string, templateId: string) {
 }
 
 function asyncGenPptxInfo(id: string) {
-  pptxId.value = id
+  pptId.value = id
   let url = `https://docmee.cn/api/ppt/asyncPptInfo?pptId=${id}`
   let xhr = new XMLHttpRequest()
   xhr.open('GET', url, true)
@@ -189,7 +190,7 @@ function downloadPptx() {
   xhr.open('POST', url, true)
   xhr.setRequestHeader('token', props.token)
   xhr.setRequestHeader('Content-Type', 'application/json')
-  xhr.send(JSON.stringify({ id: pptxId.value }))
+  xhr.send(JSON.stringify({ id: pptId.value }))
   xhr.onload = function () {
     if (this.status === 200) {
       let resp = JSON.parse(this.responseText)
@@ -207,7 +208,7 @@ function downloadPptx() {
 
 function loadById(id: string) {
   gening.value = false
-  pptxId.value = id
+  pptId.value = id
   let url = 'https://docmee.cn/api/ppt/loadPptx?id=' + id
   let xhr = new XMLHttpRequest()
   xhr.open('GET', url, true)
@@ -241,7 +242,7 @@ function resetSize() {
 
 onMounted(() => {
   // svg
-  painter = new Ppt2Svg(svg.value)
+  painter = new Ppt2Svg(svg.value) as any
   painter.setMode('edit')
 
   var mTimer = 0
@@ -254,11 +255,11 @@ onMounted(() => {
 
   resetSize()
 
-  let _pptxId = new URLSearchParams(window.location.search).get('pptxId')
-  if (_pptxId) {
-    loadById(_pptxId)
+  let _pptId = new URLSearchParams(window.location.search).get('pptId')
+  if (_pptId) {
+    loadById(_pptId)
   } else {
-    generatePptx(props.params.outline, props.params.templateId)
+    generatePptx(props.templateId, props.outline, props.dataUrl)
   }
 })
 
@@ -353,7 +354,7 @@ body {
 }
 .download {
   float: right;
-  margin: 8px;
   cursor: pointer;
+  margin-right: 1.5rem;
 }
 </style>
