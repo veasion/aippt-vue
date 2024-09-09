@@ -99,7 +99,7 @@ async function calcSubjectColor(src: string) {
           valueMap[v] = [k]
       }
   }
-  let colors = []
+  let colors = [] as any
   let values = Object.values(map).sort() as any
   for (let i = values.length - 1; i >= 0; i--) {
       let ks = valueMap[values[i]]
